@@ -8,3 +8,7 @@ docs/STRESS_TEST_REPORT.md
 docs/STRESS_TEST_REPORT.json
 scripts/stress-test.mjs
 .DS_Store
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.env.local
