@@ -5,10 +5,27 @@
  * Name: Pythagorean, Chaldean, Abjad, Hebrew, Vedic (+ full profile)
  * Chat: OpenRouter → qwen/qwen3.5-122b-a10b
  */
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import express from "express";
 import cors from "cors";
 import { z } from "zod";
+
+// Passenger cwd is unreliable — load .env from app root (…/nataltruth-app/.env)
+{
+  const here = dirname(fileURLToPath(import.meta.url));
+  // dist/server/src → ../../../.env  |  server/src (tsx) → ../../.env
+  const candidates = [
+    join(here, "../../../.env"),
+    join(here, "../../.env"),
+    join(process.cwd(), ".env"),
+  ];
+  for (const p of candidates) {
+    const r = loadEnv({ path: p, override: true });
+    if (!r.error) break;
+  }
+}
 import { calculateFullChart } from "../../engine/src/calculate.js";
 import type { EngineMode } from "../../engine/src/calculate.js";
 import {

@@ -1,5 +1,5 @@
 /**
  * Passenger / CloudLinux startup entry (app root).
- * Loads the compiled Express API.
+ * Env is loaded inside dist/server/src/index.js (explicit .env path).
  */
 import "./dist/server/src/index.js";
