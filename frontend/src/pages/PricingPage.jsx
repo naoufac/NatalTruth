@@ -33,19 +33,15 @@ export default function PricingPage() {
   }, []);
 
   useEffect(() => {
-    const fetchPricing = async () => {
-      setPricingError(null);
-      try {
-        const response = await axios.get(`${API}/pricing`);
-        setPlans(response.data.plans);
-      } catch (error) {
-        console.error("Error fetching pricing:", error);
-        setPricingError("Could not load pricing plans. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPricing();
+    // Static product framing — no Stripe/pricing API yet (see ROADMAP).
+    setPricingError(null);
+    setPlans([
+      { id: "free", name: "Free", price: 0, tier: "free", features: ["Limited calc surface (gating TBD)", "Moshier / name TBD"] },
+      { id: "monthly", name: "Monthly", price: 19, tier: "monthly", features: ["Ongoing access (gating TBD)"] },
+      { id: "premium", name: "Premium", price: 49, tier: "premium", features: ["Higher access (gating TBD)"] },
+      { id: "ultra", name: "Ultra", price: 199, tier: "ultra", features: ["Swiss-only deep report path (when reports exist)", "For coaches / precision"] },
+    ]);
+    setLoading(false);
   }, [retryCount]);
 
   // JSON-LD Product schema. Lets Google surface our subscription tiers
@@ -60,7 +56,7 @@ export default function PricingPage() {
         price: "19.00",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
-        url: "https://gab44.com/pricing",
+        url: "https://nataltruth.com/pricing",
         description: "A personalized written birth-chart reading delivered within 48 hours. No subscription.",
       },
       ...plans
@@ -71,7 +67,7 @@ export default function PricingPage() {
           price: String(p.price),
           priceCurrency: "USD",
           availability: "https://schema.org/InStock",
-          url: "https://gab44.com/pricing",
+          url: "https://nataltruth.com/pricing",
           priceSpecification: {
             "@type": "UnitPriceSpecification",
             price: String(p.price),
@@ -83,10 +79,10 @@ export default function PricingPage() {
     const schema = {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: "Gab44 Astrology AI Coaching",
+      name: "NatalTruth Astrology AI Coaching",
       description:
         "AI-powered birth-chart readings, daily horoscope coaching, transit forecasts, and one-time personalized readings from real astrologers.",
-      brand: { "@type": "Brand", name: "Gab44" },
+      brand: { "@type": "Brand", name: "NatalTruth" },
       offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: "0", highPrice: "99", offerCount: offers.length, offers },
     };
     let script = document.head.querySelector('script[data-jsonld="pricing-product"]');
@@ -110,7 +106,7 @@ export default function PricingPage() {
     }
     // Professional — contact sales
     if (plan.id === "professional") {
-      window.location.href = "mailto:contact@gab44.com?subject=Professional Plan";
+      window.location.href = "mailto:contact@nataltruth.com?subject=Professional Plan";
       return;
     }
     // Paid plan — must be logged in
@@ -190,7 +186,7 @@ export default function PricingPage() {
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
                 <Sparkles className="w-5 h-5 text-primary" />
               </div>
-              <span className="font-serif text-xl text-foreground">Gab44</span>
+              <span className="font-serif text-xl text-foreground">NatalTruth</span>
             </div>
             <h1 className="font-serif text-foreground mb-4">
               Choose how deep you want to go
@@ -304,7 +300,7 @@ export default function PricingPage() {
               FAQ section
             </Link>{" "}
             or{" "}
-            <a href="mailto:contact@gab44.com" className="text-primary hover:underline">
+            <a href="mailto:contact@nataltruth.com" className="text-primary hover:underline">
               contact us
             </a>
           </p>

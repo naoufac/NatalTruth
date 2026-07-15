@@ -10,7 +10,8 @@
     "start": "NODE_ENV=production node dist/server/src/index.js",
     "start:api": "NODE_ENV=production node dist/server/src/index.js",
     "check": "tsc --noEmit",
-    "test:smoke": "pnpm build && node dist/server/src/index.js"
+    "test:smoke": "pnpm build && node dist/server/src/index.js",
+    "test:truth": "node scripts/verify-truth-layer.mjs"
   },
   "main": "app.js",
   "engines": {

@@ -66,7 +66,7 @@ const ChartShareCard = ({ chart, user, forExport = false }) => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-6 h-6 text-amber-400" />
-            <span className="font-serif text-xl text-white">Gab44</span>
+            <span className="font-serif text-xl text-white">NatalTruth</span>
           </div>
           <h2 className="font-serif text-2xl text-white mb-1">{user?.name}'s</h2>
           <p className="text-amber-400/80 text-sm uppercase tracking-widest">Cosmic Blueprint</p>
@@ -140,7 +140,7 @@ const ChartShareCard = ({ chart, user, forExport = false }) => {
         {/* Footer */}
         <div className="text-center pt-4 border-t border-white/10">
           <p className="text-white/40 text-xs">Discover your cosmic blueprint at</p>
-          <p className="text-amber-400 font-medium">gab44.com</p>
+          <p className="text-amber-400 font-medium">nataltruth.com</p>
         </div>
       </div>
     </div>
@@ -168,23 +168,24 @@ export default function ShareChartPage() {
     const fetchChart = async () => {
       setChartError(null);
       try {
-        const response = await axios.get(`${API}/chart/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setChart(response.data);
-        // If chart already has a share token stored, use it
-        if (response.data.share_token) {
-          setShareToken(response.data.share_token);
+        const { calculateChart, adaptChartForUi, loadLocalProfile } = await import("@/lib/nataltruth");
+        const profile = loadLocalProfile() || user || {};
+        if (!profile.birth_date || profile.latitude == null || profile.longitude == null) {
+          setChartError("Add birth date + lat/lon in Settings, then open Chart.");
+          return;
         }
+        const engine = localStorage.getItem("nataltruth_engine") || "swiss";
+        const api = await calculateChart(profile, engine);
+        setChart(adaptChartForUi(api, profile));
       } catch (error) {
         console.error("Error fetching chart:", error);
-        setChartError("Could not load your chart. Please try again.");
+        setChartError(error?.message || "Could not load your chart via api.nataltruth.com.");
       } finally {
         setLoading(false);
       }
     };
     if (token) fetchChart();
-  }, [token, retryCount]);
+  }, [token, retryCount, user]);
 
   // Fetch the rendered chart image as a Blob URL whenever the user toggles
   // between card / wheel preview. Object URL is revoked on cleanup so we
@@ -231,7 +232,7 @@ export default function ShareChartPage() {
       const a = document.createElement("a");
       a.href = blobUrl;
       const safeName = (user?.name || "chart").replace(/[^A-Za-z0-9]+/g, "-").toLowerCase() || "chart";
-      a.download = `gab44-${safeName}-${style}.png`;
+      a.download = `nataltruth-${safeName}-${style}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -299,7 +300,7 @@ export default function ShareChartPage() {
       await generateShareLink();
       return; // shareToken state not yet updated; user can click again
     }
-    const text = `✨ I'm a ${chart?.sun_sign} Sun, ${chart?.moon_sign} Moon, ${chart?.rising_sign} Rising! Discover your cosmic blueprint at Gab44`;
+    const text = `✨ I'm a ${chart?.sun_sign} Sun, ${chart?.moon_sign} Moon, ${chart?.rising_sign} Rising! Discover your cosmic blueprint at NatalTruth`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl(shareToken))}`, '_blank');
   };
 
@@ -319,7 +320,7 @@ export default function ShareChartPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${user?.name}'s Cosmic Blueprint - Gab44`,
+          title: `${user?.name}'s Cosmic Blueprint - NatalTruth`,
           text: `I'm a ${chart?.sun_sign} Sun, ${chart?.moon_sign} Moon, ${chart?.rising_sign} Rising!`,
           url: shareUrl(shareToken)
         });

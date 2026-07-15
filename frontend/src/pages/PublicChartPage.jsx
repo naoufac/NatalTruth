@@ -65,12 +65,12 @@ export default function PublicChartPage() {
     const possessive = firstName.endsWith("s") ? `${firstName}'` : `${firstName}'s`;
     const sunSign = chart.sun_sign || "";
     const title = sunSign
-      ? `${possessive} cosmic blueprint — ${sunSign} · Gab44`
-      : `${possessive} cosmic blueprint · Gab44`;
+      ? `${possessive} cosmic blueprint — ${sunSign} · NatalTruth`
+      : `${possessive} cosmic blueprint · NatalTruth`;
     const description = sunSign
-      ? `A ${sunSign} sun, with moon and rising mapped to astronomical precision. Discover your own chart at gab44.com.`
-      : "A natal chart mapped to astronomical precision. Discover your own at gab44.com.";
-    const url = `https://gab44.com/chart/public/${token}`;
+      ? `A ${sunSign} sun, with moon and rising mapped to astronomical precision. Discover your own chart at nataltruth.com.`
+      : "A natal chart mapped to astronomical precision. Discover your own at nataltruth.com.";
+    const url = `https://nataltruth.com/chart/public/${token}`;
     const imageUrl = `${API}/chart/public/${token}/image.png?style=card&size=1080`;
 
     const prevTitle = document.title;
@@ -121,7 +121,7 @@ export default function PublicChartPage() {
           <XCircle className="w-12 h-12 text-destructive mx-auto" />
           <h1 className="font-serif text-2xl text-foreground">Chart Not Found</h1>
           <p className="text-muted-foreground">This chart may have been made private or the link is invalid.</p>
-          <Link to="/"><Button className="w-full rounded-xl">Discover your chart at Gab44</Button></Link>
+          <Link to="/"><Button className="w-full rounded-xl">Discover your chart at NatalTruth</Button></Link>
         </div>
       </div>
     );
@@ -135,7 +135,7 @@ export default function PublicChartPage() {
           <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
             <Sparkles className="w-4 h-4 text-primary" />
           </div>
-          <span className="font-serif text-lg text-foreground">Gab44</span>
+          <span className="font-serif text-lg text-foreground">NatalTruth</span>
         </Link>
         <Link to="/auth?mode=register">
           <Button variant="outline" size="sm" className="rounded-xl">Create My Chart</Button>
@@ -156,7 +156,7 @@ export default function PublicChartPage() {
       <div className="max-w-xl mx-auto flex flex-wrap gap-3 justify-center mb-8">
         <a
           href={`${API}/chart/public/${token}/image.png?style=card&size=1080`}
-          download="gab44-cosmic-blueprint.png"
+          download="nataltruth-cosmic-blueprint.png"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-black text-sm font-medium hover:bg-amber-600 transition-colors"
           data-testid="public-chart-download-card"
         >
@@ -165,7 +165,7 @@ export default function PublicChartPage() {
         </a>
         <a
           href={`${API}/chart/public/${token}/image.png?style=wheel&size=1600`}
-          download="gab44-natal-wheel.png"
+          download="nataltruth-natal-wheel.png"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/40 text-foreground text-sm font-medium hover:bg-muted/60 transition-colors border border-border"
           data-testid="public-chart-download-wheel"
         >
@@ -261,7 +261,7 @@ export default function PublicChartPage() {
 
           <div className="text-center pt-4 border-t border-white/10">
             <p className="text-white/40 text-xs">Discover your cosmic blueprint at</p>
-            <p className="text-amber-400 font-medium">gab44.com</p>
+            <p className="text-amber-400 font-medium">nataltruth.com</p>
           </div>
         </div>
       </div>

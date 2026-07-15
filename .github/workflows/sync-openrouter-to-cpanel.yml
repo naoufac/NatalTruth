@@ -1,0 +1,54 @@
+# Deploys GitHub Environment secret OPENROUTER → cPanel nataltruth-app/.env
+# Requires Environment "Openrouter" secret OPENROUTER, plus repo secrets for SSH.
+# Trigger: Actions → sync-openrouter-to-cpanel → Run workflow
+name: sync-openrouter-to-cpanel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment: Openrouter
+    steps:
+      - name: Verify OpenRouter key works
+        env:
+          OPENROUTER: ${{ secrets.OPENROUTER }}
+        run: |
+          set -e
+          test -n "$OPENROUTER"
+          code=$(curl -sS -o /tmp/or-auth.json -w "%{http_code}" \
+            https://openrouter.ai/api/v1/auth/key \
+            -H "Authorization: Bearer $OPENROUTER")
+          echo "auth_key_http=$code"
+          head -c 200 /tmp/or-auth.json; echo
+          test "$code" = "200"
+
+      - name: Write env and push to cPanel over SSH
+        env:
+          OPENROUTER: ${{ secrets.OPENROUTER }}
+          SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+          SSH_HOST: ${{ secrets.CPANEL_SSH_HOST }}
+          SSH_USER: ${{ secrets.CPANEL_SSH_USER }}
+        run: |
+          set -e
+          if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
+            echo "SSH secrets CPANEL_SSH_KEY / CPANEL_SSH_HOST / CPANEL_SSH_USER not set."
+            echo "Key is valid on OpenRouter; set SSH secrets to auto-deploy .env, or copy key to cPanel manually."
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          cat > /tmp/nataltruth.env <<EOF
+          NODE_ENV=production
+          PORT=3000
+          OPENROUTER_API_KEY=$OPENROUTER
+          OPENROUTER=$OPENROUTER
+          OPENROUTER_MODEL=qwen/qwen3.5-122b-a10b
+          EOF
+          scp -o StrictHostKeyChecking=accept-new -i ~/.ssh/id_deploy \
+            /tmp/nataltruth.env "$SSH_USER@$SSH_HOST:nataltruth-app/.env"
+          ssh -i ~/.ssh/id_deploy "$SSH_USER@$SSH_HOST" \
+            'chmod 600 ~/nataltruth-app/.env; mkdir -p ~/nataltruth-app/tmp; touch ~/nataltruth-app/tmp/restart.txt; export PATH="$HOME/nodevenv/nataltruth-app/22/bin:$PATH"; cloudlinux-selector restart --json --interpreter nodejs --app-root $HOME/nataltruth-app || true'
+          echo "deployed_env_ok"

@@ -51,12 +51,12 @@ export default function SettingsPage() {
   const navigate = useNavigate();
   
   const [fontSize, setFontSize] = useState(() => {
-    const stored = localStorage.getItem("gab44_font_size");
+    const stored = localStorage.getItem("nataltruth_font_size");
     return stored ? parseInt(stored) : 16;
   });
   
   const [readingMode, setReadingMode] = useState(() => {
-    return localStorage.getItem("gab44_reading_mode") === "true";
+    return localStorage.getItem("nataltruth_reading_mode") === "true";
   });
 
   const [notifications, setNotifications] = useState({
@@ -80,13 +80,13 @@ export default function SettingsPage() {
 
   const handleFontSizeChange = (value) => {
     setFontSize(value[0]);
-    localStorage.setItem("gab44_font_size", value[0].toString());
+    localStorage.setItem("nataltruth_font_size", value[0].toString());
     document.documentElement.style.setProperty("--base-font-size", `${value[0]}px`);
   };
 
   const handleReadingModeToggle = (checked) => {
     setReadingMode(checked);
-    localStorage.setItem("gab44_reading_mode", checked.toString());
+    localStorage.setItem("nataltruth_reading_mode", checked.toString());
     const root = document.documentElement;
     if (checked) {
       root.style.setProperty("--reading-line-height", "1.9");
@@ -153,27 +153,18 @@ export default function SettingsPage() {
         return;
       }
 
-      const response = await axios.put(`${API}/auth/me`, updates, {
-        headers: { Authorization: `Bearer ${token}` }
+      // No auth API on api.nataltruth.com — persist birth profile locally for calc.
+      updateUser({
+        ...profileEdit,
+        name: profileEdit.name || user?.name,
+        birth_name: profileEdit.birth_name || profileEdit.name,
+        birth_date: profileEdit.birth_date,
+        birth_time: profileEdit.birth_time || null,
+        birth_place: profileEdit.birth_place,
       });
-      updateUser(response.data);
-      toast.success("Profile updated successfully");
+      toast.success("Profile saved locally (used for api.nataltruth.com calc)");
     } catch (error) {
-      const status = error.response?.status;
-      const detail = error.response?.data?.detail;
-      let message;
-      if (Array.isArray(detail)) {
-        message = detail.map(e => e.msg?.replace(/^Value error,\s*/i, "") || "Validation error").join("; ");
-      } else if (detail) {
-        message = detail;
-      } else if (status === 401) {
-        message = "Unauthorized. Please log in again.";
-      } else if (status === 404) {
-        message = "Profile not found.";
-      } else {
-        message = "Failed to update profile";
-      }
-      toast.error(message);
+      toast.error(error?.message || "Failed to save profile");
     } finally {
       setSavingProfile(false);
     }
@@ -469,7 +460,7 @@ export default function SettingsPage() {
               <span className="text-sm">Back to Dashboard</span>
             </Link>
             <h1 className="font-serif text-3xl text-foreground">Settings</h1>
-            <p className="text-muted-foreground">Customize your Gab44 experience</p>
+            <p className="text-muted-foreground">Customize your NatalTruth experience</p>
           </div>
           <Settings2 className="w-8 h-8 text-muted-foreground" />
         </div>

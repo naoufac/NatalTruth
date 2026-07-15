@@ -1,0 +1,1536 @@
+{
+  "generatedAt": "2026-07-14T19:38:36.745Z",
+  "base": "http://api.nataltruth.com",
+  "callsPerEndpoint": 10,
+  "allPass": true,
+  "summary": [
+    {
+      "endpoint": "health",
+      "path": "/health",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 223.88,
+      "ms_avg": 283.28,
+      "ms_max": 548.98,
+      "ms_total": 2832.77,
+      "errors": []
+    },
+    {
+      "endpoint": "calculate-swiss",
+      "path": "/v1/calculate/swiss",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 227.36,
+      "ms_avg": 257.27,
+      "ms_max": 317.27,
+      "ms_total": 2572.74,
+      "errors": []
+    },
+    {
+      "endpoint": "calculate-moshier",
+      "path": "/v1/calculate/moshier",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 228.5,
+      "ms_avg": 279.06,
+      "ms_max": 403.72,
+      "ms_total": 2790.63,
+      "errors": []
+    },
+    {
+      "endpoint": "calculate-generic-swiss",
+      "path": "/v1/calculate",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 227.5,
+      "ms_avg": 243.84,
+      "ms_max": 305.17,
+      "ms_total": 2438.43,
+      "errors": []
+    },
+    {
+      "endpoint": "name-systems-list",
+      "path": "/v1/name/systems",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 221.61,
+      "ms_avg": 232.42,
+      "ms_max": 303.83,
+      "ms_total": 2324.17,
+      "errors": []
+    },
+    {
+      "endpoint": "name-full-latin",
+      "path": "/v1/name/full",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 225.23,
+      "ms_avg": 260.85,
+      "ms_max": 308.69,
+      "ms_total": 2608.5,
+      "errors": []
+    },
+    {
+      "endpoint": "name-full-arabic",
+      "path": "/v1/name/full",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 224.32,
+      "ms_avg": 228.31,
+      "ms_max": 237.84,
+      "ms_total": 2283.14,
+      "errors": []
+    },
+    {
+      "endpoint": "name-full-hebrew",
+      "path": "/v1/name/full",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 224.4,
+      "ms_avg": 233.28,
+      "ms_max": 256.78,
+      "ms_total": 2332.84,
+      "errors": []
+    },
+    {
+      "endpoint": "name-pythagorean",
+      "path": "/v1/name/pythagorean",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 223.69,
+      "ms_avg": 226.23,
+      "ms_max": 229.46,
+      "ms_total": 2262.32,
+      "errors": []
+    },
+    {
+      "endpoint": "name-chaldean",
+      "path": "/v1/name/chaldean",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 222.5,
+      "ms_avg": 254.18,
+      "ms_max": 307.43,
+      "ms_total": 2541.75,
+      "errors": []
+    },
+    {
+      "endpoint": "name-abjad",
+      "path": "/v1/name/abjad",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 223.87,
+      "ms_avg": 258.24,
+      "ms_max": 393.97,
+      "ms_total": 2582.44,
+      "errors": []
+    },
+    {
+      "endpoint": "name-hebrew",
+      "path": "/v1/name/hebrew",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 223.48,
+      "ms_avg": 255.23,
+      "ms_max": 311.48,
+      "ms_total": 2552.33,
+      "errors": []
+    },
+    {
+      "endpoint": "name-vedic",
+      "path": "/v1/name/vedic",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 227.63,
+      "ms_avg": 270.81,
+      "ms_max": 309.67,
+      "ms_total": 2708.09,
+      "errors": []
+    },
+    {
+      "endpoint": "name-gematria-alias",
+      "path": "/v1/gematria",
+      "success": "10/10",
+      "pass": true,
+      "ms_min": 225.05,
+      "ms_avg": 240.18,
+      "ms_max": 290.43,
+      "ms_total": 2401.84,
+      "errors": []
+    }
+  ],
+  "results": [
+    {
+      "name": "health",
+      "path": "/health",
+      "method": "GET",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 223.88,
+        "max": 548.98,
+        "avg": 283.28,
+        "total": 2832.77
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 548.98,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 226.44,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 225.21,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 227.52,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 313.09,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 307.66,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 307.36,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 228.03,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 224.6,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 223.88,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "calculate-swiss",
+      "path": "/v1/calculate/swiss",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 227.36,
+        "max": 317.27,
+        "avg": 257.27,
+        "total": 2572.74
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 317.27,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 236.97,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 232.03,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 229.39,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 258.9,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 301.2,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 306.39,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 230.81,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 227.36,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 232.42,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "calculate-moshier",
+      "path": "/v1/calculate/moshier",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 228.5,
+        "max": 403.72,
+        "avg": 279.06,
+        "total": 2790.63
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 234.5,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 229.82,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 228.5,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 244.84,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 316.62,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 312.31,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 403.72,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 229.26,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 297.31,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 293.75,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "calculate-generic-swiss",
+      "path": "/v1/calculate",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 227.5,
+        "max": 305.17,
+        "avg": 243.84,
+        "total": 2438.43
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 305.17,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 290.51,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 242.16,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 228.58,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 227.5,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 230.12,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 227.78,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 228.32,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 230.11,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 228.18,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-systems-list",
+      "path": "/v1/name/systems",
+      "method": "GET",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 221.61,
+        "max": 303.83,
+        "avg": 232.42,
+        "total": 2324.17
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 223.56,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 223.46,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 222.49,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 222.77,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 222.3,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 221.61,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 222.19,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 303.83,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 239.22,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 222.74,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-full-latin",
+      "path": "/v1/name/full",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 225.23,
+        "max": 308.69,
+        "avg": 260.85,
+        "total": 2608.5
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 228.42,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 225.23,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 228.67,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 227.41,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 263.95,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 307.9,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 307.1,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 227.23,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 283.9,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 308.69,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-full-arabic",
+      "path": "/v1/name/full",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 224.32,
+        "max": 237.84,
+        "avg": 228.31,
+        "total": 2283.14
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 226.75,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 229.06,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 224.32,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 225.55,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 227.98,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 225.9,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 226.11,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 237.84,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 229.02,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 230.61,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-full-hebrew",
+      "path": "/v1/name/full",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 224.4,
+        "max": 256.78,
+        "avg": 233.28,
+        "total": 2332.84
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 244.53,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 227.02,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 225.62,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 244.18,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 256.78,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 224.4,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 228.47,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 225.43,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 228.67,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 227.74,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-pythagorean",
+      "path": "/v1/name/pythagorean",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 223.69,
+        "max": 229.46,
+        "avg": 226.23,
+        "total": 2262.32
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 225.67,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 225.97,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 225.67,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 226.05,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 223.69,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 224.85,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 228.3,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 227.54,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 229.46,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 225.12,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-chaldean",
+      "path": "/v1/name/chaldean",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 222.5,
+        "max": 307.43,
+        "avg": 254.18,
+        "total": 2541.75
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 225.27,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 244.37,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 222.5,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 227.62,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 226.79,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 282.79,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 292.35,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 307.43,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 270.72,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 241.91,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-abjad",
+      "path": "/v1/name/abjad",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 223.87,
+        "max": 393.97,
+        "avg": 258.24,
+        "total": 2582.44
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 226.64,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 284.25,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 325.26,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 393.97,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 225.11,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 226.02,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 226.14,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 227.08,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 223.87,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 224.1,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-hebrew",
+      "path": "/v1/name/hebrew",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 223.48,
+        "max": 311.48,
+        "avg": 255.23,
+        "total": 2552.33
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 225.29,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 237.22,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 226.73,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 311.48,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 306.68,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 306.86,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 223.48,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 226.23,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 232.58,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 255.78,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-vedic",
+      "path": "/v1/name/vedic",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 227.63,
+        "max": 309.67,
+        "avg": 270.81,
+        "total": 2708.09
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 291.05,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 308.58,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 305.09,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 309.67,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 234.06,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 276.27,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 263.02,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 232.32,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 260.4,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 227.63,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    },
+    {
+      "name": "name-gematria-alias",
+      "path": "/v1/gematria",
+      "method": "POST",
+      "calls": 10,
+      "success": 10,
+      "fail": 0,
+      "pass": true,
+      "ms": {
+        "min": 225.05,
+        "max": 290.43,
+        "avg": 240.18,
+        "total": 2401.84
+      },
+      "sampleErrors": [],
+      "runs": [
+        {
+          "i": 1,
+          "ok": true,
+          "ms": 225.05,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 2,
+          "ok": true,
+          "ms": 225.66,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 3,
+          "ok": true,
+          "ms": 228.6,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 4,
+          "ok": true,
+          "ms": 226.32,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 5,
+          "ok": true,
+          "ms": 263.06,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 6,
+          "ok": true,
+          "ms": 238.19,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 7,
+          "ok": true,
+          "ms": 226.42,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 8,
+          "ok": true,
+          "ms": 250.22,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 9,
+          "ok": true,
+          "ms": 227.89,
+          "status": 200,
+          "error": null,
+          "validation": []
+        },
+        {
+          "i": 10,
+          "ok": true,
+          "ms": 290.43,
+          "status": 200,
+          "error": null,
+          "validation": []
+        }
+      ]
+    }
+  ]
+}

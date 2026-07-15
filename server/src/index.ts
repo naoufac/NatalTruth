@@ -3,6 +3,7 @@
  *
  * Chart: planets, houses, aspects, patterns (swiss + moshier)
  * Name: Pythagorean, Chaldean, Abjad, Hebrew, Vedic (+ full profile)
+ * Chat: OpenRouter → qwen/qwen3.5-122b-a10b
  */
 import "dotenv/config";
 import express from "express";
@@ -20,6 +21,14 @@ import {
   listLetterSystems,
   type LetterSystemId,
 } from "../../engine/src/nameSystems.js";
+import {
+  chatCompletion,
+  deleteSession,
+  getApiKey,
+  getSession,
+  listSessions,
+  OPENROUTER_MODEL,
+} from "./openrouter.js";
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
@@ -112,36 +121,16 @@ async function runCalculate(
   }
 }
 
+/** Minimal liveness for Passenger/process supervisors only — not a product surface. */
 app.get("/health", (_req, res) => {
   res.json({
     ok: true,
     service: "nataltruth-api",
-    version: "0.3.0",
-    chart: {
-      engines: ["swiss", "moshier"],
-      includes: [
-        "planetaryPositions",
-        "houseCusps",
-        "aspects",
-        "patterns",
-        "nameSystems",
-      ],
-      patterns: [
-        "grand_trine",
-        "t_square",
-        "yod",
-        "stellium",
-        "grand_cross",
-      ],
-      routes: {
-        swiss: "POST /v1/calculate/swiss",
-        moshier: "POST /v1/calculate/moshier",
-        generic: "POST /v1/calculate",
-      },
-    },
-    name: {
-      systems: listLetterSystems(),
-      full: "POST /v1/name/full",
+    version: "0.4.0",
+    ai: {
+      provider: "openrouter",
+      model: OPENROUTER_MODEL,
+      configured: !!getApiKey(),
     },
   });
 });
@@ -229,6 +218,81 @@ app.post("/v1/gematria", async (req, res) => {
     res.json({ ok: true, profile });
   } catch (err) {
     sendErr(res, err, "Gematria failed");
+  }
+});
+
+// ── Chat (OpenRouter) — paths match legacy frontend expectations ───
+
+const ChatBody = z.object({
+  message: z.string().min(1),
+  session_id: z.string().nullable().optional(),
+  context: z.string().nullable().optional(),
+});
+
+app.get("/chat/sessions", (_req, res) => {
+  res.json(listSessions());
+});
+
+app.get("/chat/history/:sessionId", (req, res) => {
+  const s = getSession(req.params.sessionId);
+  if (!s) {
+    res.status(404).json({ ok: false, error: "Session not found" });
+    return;
+  }
+  res.json(
+    s.messages
+      .filter((m) => m.role === "user" || m.role === "assistant")
+      .map((m) => ({
+        role: m.role,
+        content: m.content,
+        timestamp: s.updatedAt,
+      }))
+  );
+});
+
+app.delete("/chat/session/:sessionId", (req, res) => {
+  deleteSession(req.params.sessionId);
+  res.json({ ok: true });
+});
+
+app.post("/chat", async (req, res) => {
+  try {
+    const body = ChatBody.parse(req.body);
+    const out = await chatCompletion({
+      message: body.message,
+      sessionId: body.session_id,
+      context: body.context,
+    });
+    res.json({
+      ok: true,
+      response: out.response,
+      session_id: out.session_id,
+      model: out.model,
+    });
+  } catch (err) {
+    console.error("[chat]", err);
+    sendErr(res, err, "Chat failed");
+  }
+});
+
+/** Canonical v1 alias */
+app.post("/v1/chat", async (req, res) => {
+  try {
+    const body = ChatBody.parse(req.body);
+    const out = await chatCompletion({
+      message: body.message,
+      sessionId: body.session_id,
+      context: body.context,
+    });
+    res.json({
+      ok: true,
+      response: out.response,
+      session_id: out.session_id,
+      model: out.model,
+    });
+  } catch (err) {
+    console.error("[v1/chat]", err);
+    sendErr(res, err, "Chat failed");
   }
 });
 

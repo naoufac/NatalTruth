@@ -1,36 +1,40 @@
-# Frontend ↔ api.nataltruth.com
+# Frontend ↔ api.nataltruth.com (cPanel)
 
-## What was wired
+**Hosted:** `https://nataltruth.com` → `/home/nchobahc/nataltruth.com`  
+**API:** `https://api.nataltruth.com` → Node app `nataltruth-app`  
+**Origin:** separate product UI (former Gab44 frontend) — mapped here; no access to original backend.
 
-| UI | Calls |
-|----|--------|
-| **Chart** (`/chart`) | `POST /v1/calculate/swiss` (or moshier if `localStorage.nataltruth_engine=moshier`) |
-| **Gematria** (`/gematria`) | `POST /v1/name/full` |
-| **Numerology** (`/numerology`) | `POST /v1/name/full` |
-| **API base** | `https://api.nataltruth.com` (no `/api` prefix) |
+## Button / route → API map
 
-Adapter: `src/lib/nataltruth.js`  
-Config: `src/lib/apiConfig.js` + `.env`
+| UI route / action | API call | Status |
+|-------------------|----------|--------|
+| Register / Auth save profile | Local `localStorage` only | Live (no auth API) |
+| **Chart** `/chart` | `POST /v1/calculate/swiss` or `/moshier` | **Live** |
+| **Gematria** `/gematria` | `POST /v1/name/full` | **Live** |
+| **Numerology** `/numerology` | `POST /v1/name/full` | **Live** |
+| **Dashboard** name numbers | `POST /v1/name/full` | **Live** |
+| **Chat** `/chat` send | `POST /chat` → OpenRouter `qwen/qwen3.5-122b-a10b` | **Live** |
+| Chat sessions list | `GET /chat/sessions` | In-memory on API process |
+| Chat history / delete | `GET /chat/history/:id`, `DELETE /chat/session/:id` | In-memory |
+| **Share** chart load | `POST /v1/calculate/*` via local profile | **Live** |
+| **Pricing** | Static Free / $19 / $49 / $199 | No payments API |
+| Settings profile save | Local profile | **Live** |
+| Transits, compatibility, friend, payments, admin CMS | — | **Not on calc API** (UI may show empty/error) |
 
-## Auth truth
+## Env
 
-`api.nataltruth.com` has **no** auth endpoints.  
-Registration/login store a **local profile** (birth data + lat/lon) for calculate.  
-Other pages (chat, payments, admin, …) still call paths that **do not exist** on the calc API — they will fail until those APIs exist.
-
-## Run
-
-```bash
-cd frontend
-cp .env.example .env   # already points at api.nataltruth.com
-yarn install   # or npm install
-yarn start
+```
+REACT_APP_BACKEND_URL=https://api.nataltruth.com
 ```
 
-## Required profile fields for chart
+## SPA publish
 
-- full name  
-- birth_date  
-- birth_place label  
-- **latitude + longitude** (registration step 2)  
-- optional birth_time, utc_offset  
+```bash
+cd frontend && npm run build
+rsync -avz --delete frontend/build/ cpanel:nataltruth.com/
+# .htaccess SPA rewrite must remain
+```
+
+## Health
+
+`GET /health` is process liveness for hosting only — **not** a product feature or goal.

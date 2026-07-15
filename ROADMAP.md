@@ -36,10 +36,10 @@ Build a **clean** NatalTruth stack that:
 | 0.1 | Swiss chart API (planets, houses, aspects, patterns) | **DONE** |
 | 0.2 | Moshier chart API (same shape) | **DONE** |
 | 0.3 | Name systems: Pythagorean, Chaldean, Abjad, Hebrew, Vedic + full | **DONE** |
-| 0.4 | Stress validation of live calc endpoints | **DONE** (report on laptop only) |
+| 0.4 | Stress validation of live calc endpoints | **DONE** (`docs/STRESS_TEST_REPORT.md`; live recheck 2026-07-15) |
 | 0.5 | Deploy API on cPanel `api.nataltruth.com` | **DONE** |
-| 0.6 | Clean GitHub production tree for API | **DONE** |
-| 0.7 | Honest docs (this ROADMAP + README) | **IN PROGRESS → this commit** |
+| 0.6 | Clean GitHub production tree for API | **DONE** (remote `main` audited 2026-07-15: engine/server/frontend/docs only; no node_modules/dist/secrets monorepo noise) |
+| 0.7 | Honest docs (this ROADMAP + README) | **DONE** (Phase 0 claims re-checked against live API 2026-07-15) |
 
 ---
 
@@ -47,7 +47,7 @@ Build a **clean** NatalTruth stack that:
 
 | Step | Item | Status |
 |------|------|--------|
-| 1.1 | Define **exactly** which calcs each plan may call (matrix Free / 19 / 49 / 199) | **TODO** — agree in writing |
+| 1.1 | Define **exactly** which calcs each plan may call (matrix Free / 19 / 49 / 199) | **PARTIAL** — matrix written below; founder must fill **UNDECIDED** cells |
 | 1.2 | Auth + user DB (no dual systems) | **TODO** |
 | 1.3 | Persist charts + calculation snapshots | **TODO** |
 | 1.4 | Birth place → lat/lon/tz pipeline (precision) | **TODO** (manual lat/lon today) |
@@ -112,7 +112,61 @@ Build a **clean** NatalTruth stack that:
 | Ultra $199 | **Swiss** full chart + full name fusion + **deep** report |
 | Coach workflow | Ultra + denser technical + dynamics language |
 
-Exact matrix is **step 1.1** — do not invent gates before agreement.
+**Do not treat the table above as product gates.** Gates live only in **§1.1 matrix** below (LOCKED vs UNDECIDED).
+
+---
+
+## 1.1 Plan × calc matrix (honest — no invented gates)
+
+**Rule for this matrix**
+
+| Cell value | Meaning |
+|------------|---------|
+| **LOCKED** | Already stated as a binding rule in founder docs (cited). Enforcement in code may still be TODO. |
+| **UNDECIDED** | No founder lock yet. **Must not** invent Free / $19 / $49 / $199 limits. |
+| **OPEN (API)** | Endpoint is live on `api.nataltruth.com` for any caller today; plan gating is **not** implemented. |
+
+**Sources for LOCKED only**
+
+- README: *“Report generation rule (locked): Swiss Ephemeris **only** for the **$199 Ultra** tier.”*
+- ROADMAP / ARCHITECTURE: Ultra report path uses Swiss (when reports exist); step 1.6 still TODO for enforcement.
+
+**Intent language** (Ultra full name fusion, deep report, Free “limited”, mid-tier “broader”) is **not** LOCKED product policy — those cells stay **UNDECIDED**.
+
+### Chart engine access (product intent)
+
+| Plan | Price | `POST …/calculate/swiss` | `POST …/calculate/moshier` | `POST …/calculate` engineMode | Deep **report** path engine |
+|------|-------|--------------------------|----------------------------|-------------------------------|-----------------------------|
+| Free | $0 | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (no report API yet) |
+| Monthly | $19 | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (no report API yet) |
+| Premium | $49 | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (API **OPEN** today) | **UNDECIDED** (no report API yet) |
+| Ultra | $199 | **UNDECIDED** as plan gate (API **OPEN** today) | **UNDECIDED** as plan gate (API **OPEN** today) | **UNDECIDED** as plan gate (API **OPEN** today) | **LOCKED: Swiss only** (README report rule; enforcement = step 1.6 TODO) |
+
+### Name / letter systems (product intent)
+
+Endpoints live today: `POST /v1/name/full`, `/pythagorean`, `/chaldean`, `/abjad`, `/hebrew`, `/vedic`, `GET /v1/name/systems`, alias `POST /v1/gematria`.
+
+| Plan | Price | Which name systems may be used | Full multi-system profile | Notes |
+|------|-------|--------------------------------|---------------------------|--------|
+| Free | $0 | **UNDECIDED** | **UNDECIDED** | API **OPEN** today (no plan check) |
+| Monthly | $19 | **UNDECIDED** | **UNDECIDED** | API **OPEN** today |
+| Premium | $49 | **UNDECIDED** | **UNDECIDED** | API **OPEN** today |
+| Ultra | $199 | **UNDECIDED** | **UNDECIDED** | Intent text says full fusion; **not** LOCKED until founder confirms |
+
+### Report depth (product intent)
+
+| Plan | Price | Report depth / composition | Status |
+|------|-------|----------------------------|--------|
+| Free | $0 | **UNDECIDED** | Report API **not built** |
+| Monthly | $19 | **UNDECIDED** | Report API **not built** |
+| Premium | $49 | **UNDECIDED** | Report API **not built** |
+| Ultra | $199 | **UNDECIDED** depth package | Report API **not built**; when built, chart engine for this path is **LOCKED Swiss** (above) |
+
+### What is explicitly not claimed
+
+- No Stripe products, entitlements, or middleware enforce any row above.
+- **OPEN (API)** means calc endpoints accept requests without a plan id — not that every plan is “entitled” commercially.
+- Filling **UNDECIDED** cells requires a founder decision; do not invent gates in code before that.
 
 ---
 
@@ -125,14 +179,14 @@ Exact matrix is **step 1.1** — do not invent gates before agreement.
 
 ---
 
-## Suggested next single step (after docs land)
+## Suggested next single step (after 1.1 matrix scaffold)
 
-**Agree plan × calc matrix (1.1)** — then either:
+**Fill UNDECIDED cells in §1.1** (founder), then pick **one** track:
 
 - **A)** Auth + store charts (1.2–1.3), or  
-- **B)** Deep report API prototype (1.5–1.7) on Swiss  
+- **B)** Deep report API prototype (1.5–1.7) on **Swiss** (respects LOCKED Ultra report engine)
 
-Pick one track; do not run both half-finished.
+Pick one track; do not run both half-finished. Do not implement plan gates from UNDECIDED cells.
 
 ---
 

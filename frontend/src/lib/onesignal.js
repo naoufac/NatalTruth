@@ -46,13 +46,13 @@ export function loadOneSignal() {
 
     // Inject the SDK script if not already present.
     const existing = document.querySelector(
-      'script[data-gab44-onesignal-sdk="1"]'
+      'script[data-nataltruth-onesignal-sdk="1"]'
     );
     if (!existing) {
       const script = document.createElement("script");
       script.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
       script.defer = true;
-      script.dataset.gab44OnesignalSdk = "1";
+      script.dataset.nataltruthOnesignalSdk = "1";
       script.onerror = () => finish(null);
       document.head.appendChild(script);
     }

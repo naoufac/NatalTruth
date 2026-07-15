@@ -13,7 +13,7 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     // Check localStorage first
-    const stored = localStorage.getItem("gab44_theme");
+    const stored = localStorage.getItem("nataltruth_theme");
     if (stored) return stored;
     
     // Then check system preference
@@ -32,7 +32,7 @@ export const ThemeProvider = ({ children }) => {
       root.classList.remove("dark");
     }
     
-    localStorage.setItem("gab44_theme", theme);
+    localStorage.setItem("nataltruth_theme", theme);
   }, [theme]);
 
   // Listen for system theme changes
@@ -40,7 +40,7 @@ export const ThemeProvider = ({ children }) => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     
     const handleChange = (e) => {
-      const stored = localStorage.getItem("gab44_theme");
+      const stored = localStorage.getItem("nataltruth_theme");
       if (!stored) {
         setTheme(e.matches ? "dark" : "light");
       }

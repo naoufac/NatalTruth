@@ -228,8 +228,8 @@ export default function ZodiacLandingPage() {
   // Per-page SEO meta — set once when the sign changes, restore on unmount
   useEffect(() => {
     if (!meta) return;
-    const url = `https://gab44.com/zodiac/${slug}`;
-    const title = `${meta.name} Daily Horoscope (${todayHuman()}) — Gab44`;
+    const url = `https://nataltruth.com/zodiac/${slug}`;
+    const title = `${meta.name} Daily Horoscope (${todayHuman()}) — NatalTruth`;
     const description = `Today's ${meta.name} horoscope: love, career, wellness, lucky number and color. Free daily reading powered by AI astrologers — refreshed every morning.`;
 
     const prevTitle = document.title;
@@ -251,11 +251,11 @@ export default function ZodiacLandingPage() {
       description,
       datePublished: new Date().toISOString().slice(0, 10),
       dateModified: new Date().toISOString().slice(0, 10),
-      author: { "@type": "Organization", name: "Gab44" },
+      author: { "@type": "Organization", name: "NatalTruth" },
       publisher: {
         "@type": "Organization",
-        name: "Gab44",
-        logo: { "@type": "ImageObject", url: "https://gab44.com/favicon.svg" },
+        name: "NatalTruth",
+        logo: { "@type": "ImageObject", url: "https://nataltruth.com/favicon.svg" },
       },
       mainEntityOfPage: url,
       about: { "@type": "Thing", name: `${meta.name} zodiac sign` },
@@ -284,7 +284,7 @@ export default function ZodiacLandingPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Gab44 home</span>
+            <span className="text-sm">NatalTruth home</span>
           </Link>
           <Link to="/auth?mode=register" className="text-sm text-primary hover:underline" data-testid="zodiac-nav-signup">
             Create free chart →
@@ -487,11 +487,11 @@ export default function ZodiacLandingPage() {
       {/* Slim footer */}
       <footer className="border-t border-border py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
-          <p>© 2026 Gab44 · Daily {meta.name} horoscope refreshed every morning.</p>
+          <p>© 2026 NatalTruth · Daily {meta.name} horoscope refreshed every morning.</p>
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-foreground">Home</Link>
             <Link to="/pricing" className="hover:text-foreground">Pricing</Link>
-            <a href="mailto:contact@gab44.com" className="hover:text-foreground">Contact</a>
+            <a href="mailto:contact@nataltruth.com" className="hover:text-foreground">Contact</a>
           </div>
         </div>
       </footer>

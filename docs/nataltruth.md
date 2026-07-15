@@ -20,13 +20,17 @@ Generic: `POST /v1/calculate` + `"engineMode": "swiss" | "moshier"` (default **s
 
 ### Always returned on calculate
 
-| Block | JSON field | Contents |
-|-------|------------|----------|
-| Planetary positions | `planetaryPositions` | Sun→Pluto, Node, Chiron, PoF, South Node, Lilith, … |
-| House cusps | `houseCusps` | 12 houses (Placidus default) |
-| Aspects | `aspects` | Full aspect list with orbs |
-| Patterns | `patterns` | Grand Trine, T-Square, Yod, Stellium, Grand Cross, … |
-| Name (all systems) | `name` | Full multi-system name profile |
+Live success body includes **top-level convenience fields** plus a nested **`snapshot`** (same data, different names for planets/houses):
+
+| Block | Top-level field | Also in `snapshot` | Contents |
+|-------|-----------------|--------------------|----------|
+| Planetary positions | `planetaryPositions` | `planets` | Sun→Pluto, Node, Chiron, PoF, South Node, Lilith, … |
+| House cusps | `houseCusps` | `houses` | 12 houses (Placidus default) |
+| Aspects | `aspects` | `aspects` | Full aspect list with orbs |
+| Patterns | `patterns` | `patterns` | Grand Trine, T-Square, Yod, Stellium, Grand Cross, … |
+| Name (all systems) | `name` | `numerology` | Full multi-system name profile |
+
+Also at top level: `ok`, `engineMode`, `ephemeris`. Full structured object: `snapshot`.
 
 No lite mode. No skipped blocks.
 
@@ -270,8 +274,11 @@ Error shape:
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| `GET` | `/health` | Liveness + engine list |
+| `POST` | `/chat` | OpenRouter chat (model `qwen/qwen3.5-122b-a10b`). Body: `{ message, session_id? }` |
+| `POST` | `/v1/chat` | Same as `/chat` |
+| `GET` | `/chat/sessions` | In-memory session list |
 | `POST` | `/v1/gematria` | Name + birthDate only (utility). Product flows should use full calculate. |
+| `GET` | `/health` | Process liveness only (hosting) — not a product surface |
 
 ### Gematria body
 
@@ -304,9 +311,9 @@ Each item includes type, planets, strength, description.
 
 | Host | Role | Status |
 |------|------|--------|
-| `api.nataltruth.com` | Calc API | Live |
-| `nataltruth.com` | Public shell | Placeholder |
-| `nao.nataltruth.com` | Admin | Placeholder |
+| `api.nataltruth.com` | Calc API | **Live** v0.3.0 (validated) |
+| `nataltruth.com` | Public frontend (scratch SPA) | **Live** static HTML/JS (HTTP 200); may still carry legacy branding — not a finished product UI |
+| `nao.nataltruth.com` | Admin | **Placeholder** only (static scaffold page) |
 
 ---
 

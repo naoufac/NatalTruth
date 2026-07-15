@@ -197,7 +197,7 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen }) => {
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
             <Sparkles className="w-5 h-5 text-primary" />
           </div>
-          <span className="font-serif text-xl text-foreground">Gab44</span>
+          <span className="font-serif text-xl text-foreground">NatalTruth</span>
         </Link>
       </div>
 
@@ -310,7 +310,7 @@ const MobileHeader = ({ setMobileOpen }) => {
         </button>
         <Link to="/" className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-primary" />
-          <span className="font-serif text-lg text-foreground">Gab44</span>
+          <span className="font-serif text-lg text-foreground">NatalTruth</span>
         </Link>
         <button
           onClick={toggleTheme}
@@ -332,41 +332,32 @@ const DashboardOverview = () => {
   const [numerology, setNumerology] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFullDashboard, setShowFullDashboard] = useState(
-    () => localStorage.getItem("gab44_onboarding_skipped") === "true"
+    () => localStorage.getItem("nataltruth_onboarding_skipped") === "true"
   );
 
   useEffect(() => {
+    // Live API surface: name/full only. Guidance + transits not built yet.
     const fetchData = async () => {
-      const [guidanceSettled, transitsSettled, numerologySettled] = await Promise.allSettled([
-        axios.get(`${API}/guidance/daily`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/transits/upcoming`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/numerology/me`, { headers: { Authorization: `Bearer ${token}` } }),
-      ]);
-
-      if (guidanceSettled.status === "fulfilled") {
-        setDailyGuidance(guidanceSettled.value.data);
-      } else {
-        console.warn("Daily guidance fetch failed:", guidanceSettled.reason);
-        toast.error("Failed to load daily guidance. Please try again.");
+      setDailyGuidance(null);
+      setTransits([]);
+      try {
+        const fullName = user?.birth_name || user?.name;
+        const birthDate = user?.birth_date;
+        if (fullName) {
+          const { nameFull, adaptNumerologyForUi } = await import("@/lib/nataltruth");
+          const profile = await nameFull(fullName, birthDate);
+          setNumerology(adaptNumerologyForUi(profile));
+        } else {
+          setNumerology(null);
+        }
+      } catch (err) {
+        console.warn("Numerology via api.nataltruth.com failed:", err);
+        setNumerology(null);
       }
-
-      if (transitsSettled.status === "fulfilled") {
-        setTransits(Array.isArray(transitsSettled.value.data) ? transitsSettled.value.data.slice(0, 3) : []);
-      } else {
-        console.warn("Transits fetch failed:", transitsSettled.reason);
-      }
-
-      if (numerologySettled.status === "fulfilled") {
-        setNumerology(numerologySettled.value.data);
-      } else {
-        console.warn("Numerology fetch failed:", numerologySettled.reason);
-        toast.error("Failed to load numerology. Please try again.");
-      }
-
       setLoading(false);
     };
     fetchData();
-  }, [token]);
+  }, [token, user?.birth_name, user?.name, user?.birth_date]);
 
   if (loading) {
     return (
@@ -382,7 +373,7 @@ const DashboardOverview = () => {
   const isNewUser = !numerology && !showFullDashboard;
 
   const handleSkipOnboarding = () => {
-    localStorage.setItem("gab44_onboarding_skipped", "true");
+    localStorage.setItem("nataltruth_onboarding_skipped", "true");
     setShowFullDashboard(true);
   };
 

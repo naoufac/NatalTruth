@@ -70,7 +70,7 @@ export default function ReadingThanksPage() {
   // SEO: this page should not be indexed
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = "Thank you — Gab44";
+    document.title = "Thank you — NatalTruth";
     let robots = document.head.querySelector('meta[name="robots"]');
     let created = false;
     if (!robots) {
@@ -136,7 +136,7 @@ export default function ReadingThanksPage() {
           <p className="text-muted-foreground text-sm mb-6">
             {error || "If you completed checkout, your reading is still safe — email us and we'll find it."}
           </p>
-          <a href="mailto:contact@gab44.com">
+          <a href="mailto:contact@nataltruth.com">
             <Button className="rounded-xl bg-primary text-primary-foreground gap-2">
               <Mail className="w-4 h-4" />
               Email support
@@ -157,7 +157,7 @@ export default function ReadingThanksPage() {
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
               <Sparkles className="w-4 h-4 text-primary" />
             </div>
-            <span className="font-serif text-lg text-foreground">Gab44</span>
+            <span className="font-serif text-lg text-foreground">NatalTruth</span>
           </Link>
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Home
@@ -317,7 +317,7 @@ export default function ReadingThanksPage() {
                 Create your free chart <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <a href="mailto:contact@gab44.com">
+            <a href="mailto:contact@nataltruth.com">
               <Button variant="ghost" className="rounded-xl gap-2">
                 <Mail className="w-4 h-4" />
                 Need help?

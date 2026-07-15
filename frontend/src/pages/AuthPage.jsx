@@ -108,7 +108,7 @@ export default function AuthPage() {
         birth_time: "",
         birth_place: "",
       });
-      toast.success("Welcome to Gab44! Check your inbox to verify your email.");
+      toast.success("Welcome to NatalTruth! Check your inbox to verify your email.");
       navigate("/dashboard");
     } catch (error) {
       toast.error(parseApiError(error));

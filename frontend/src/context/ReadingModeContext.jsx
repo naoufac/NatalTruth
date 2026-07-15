@@ -12,17 +12,17 @@ export const useReadingMode = () => {
 
 export const ReadingModeProvider = ({ children }) => {
   const [readingMode, setReadingMode] = useState(() => {
-    const stored = localStorage.getItem("gab44_reading_mode");
+    const stored = localStorage.getItem("nataltruth_reading_mode");
     return stored === "true";
   });
 
   const [fontSize, setFontSize] = useState(() => {
-    const stored = localStorage.getItem("gab44_font_size");
+    const stored = localStorage.getItem("nataltruth_font_size");
     return stored ? parseInt(stored) : 16;
   });
 
   useEffect(() => {
-    localStorage.setItem("gab44_reading_mode", readingMode.toString());
+    localStorage.setItem("nataltruth_reading_mode", readingMode.toString());
     
     // Apply reading mode styles to root
     const root = document.documentElement;
@@ -36,7 +36,7 @@ export const ReadingModeProvider = ({ children }) => {
   }, [readingMode]);
 
   useEffect(() => {
-    localStorage.setItem("gab44_font_size", fontSize.toString());
+    localStorage.setItem("nataltruth_font_size", fontSize.toString());
     document.documentElement.style.setProperty("--base-font-size", `${fontSize}px`);
   }, [fontSize]);
 

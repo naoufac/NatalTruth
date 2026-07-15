@@ -39,7 +39,7 @@ export default function VerifyEmailPage() {
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
             <Sparkles className="w-5 h-5 text-primary" />
           </div>
-          <span className="font-serif text-xl text-foreground">Gab44</span>
+          <span className="font-serif text-xl text-foreground">NatalTruth</span>
         </div>
 
         {status === "loading" && (

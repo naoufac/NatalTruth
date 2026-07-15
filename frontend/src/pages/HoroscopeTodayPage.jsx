@@ -68,10 +68,10 @@ export default function HoroscopeTodayPage() {
   }, []);
 
   useEffect(() => {
-    const url = "https://gab44.com/horoscope/today";
-    const title = `Today's Horoscope for All 12 Zodiac Signs (${todayHuman()}) — Gab44`;
+    const url = "https://nataltruth.com/horoscope/today";
+    const title = `Today's Horoscope for All 12 Zodiac Signs (${todayHuman()}) — NatalTruth`;
     const description =
-      "Daily horoscopes for all 12 zodiac signs — Aries through Pisces. Love, career, wellness, and lucky number for today, refreshed every morning by Gab44.";
+      "Daily horoscopes for all 12 zodiac signs — Aries through Pisces. Love, career, wellness, and lucky number for today, refreshed every morning by NatalTruth.";
     const prevTitle = document.title;
     document.title = title;
     setMeta("description", description);
@@ -94,7 +94,7 @@ export default function HoroscopeTodayPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Gab44 home</span>
+            <span className="text-sm">NatalTruth home</span>
           </Link>
           <Link to="/auth?mode=register" className="text-sm text-primary hover:underline">
             Create free chart →

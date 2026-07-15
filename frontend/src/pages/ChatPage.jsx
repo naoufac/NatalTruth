@@ -52,10 +52,10 @@ export default function ChatPage() {
       const response = await axios.get(`${API}/chat/sessions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setSessions(response.data);
+      setSessions(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching sessions:", error);
-      toast.error("Could not load your past conversations.");
+      setSessions([]);
     }
   };
 
@@ -212,7 +212,7 @@ export default function ChatPage() {
                 <Sparkles className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <h1 className="font-medium text-foreground">Gab44 AI Coach</h1>
+                <h1 className="font-medium text-foreground">NatalTruth AI Coach</h1>
                 <p className="text-xs text-green-500 flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-green-500" />
                   Online - Ready to guide you

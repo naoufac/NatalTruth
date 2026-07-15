@@ -11,12 +11,7 @@ const http = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// ─── Low-level calls ─────────────────────────────────────────────────
-
-export async function health() {
-  const { data } = await http.get("/health");
-  return data;
-}
+// ─── Low-level calls (calc + name only; no health polling) ───────────
 
 /**
  * @param {object} birth
@@ -43,6 +38,36 @@ export async function nameSystem(system, fullName) {
   const { data } = await http.post(`/v1/name/${system}`, { fullName });
   if (!data?.ok) throw new Error(data?.error || `${system} failed`);
   return data.result;
+}
+
+/**
+ * Chat via api.nataltruth.com → OpenRouter (Qwen3.5-122B).
+ * Matches ChatPage contract: { message, session_id } → { response, session_id }.
+ */
+export async function chatMessage(message, sessionId = null, context = null) {
+  const { data } = await http.post("/chat", {
+    message,
+    session_id: sessionId || null,
+    context: context || null,
+  });
+  if (!data?.ok && !data?.response) {
+    throw new Error(data?.error || "Chat failed");
+  }
+  return data;
+}
+
+export async function chatSessions() {
+  const { data } = await http.get("/chat/sessions");
+  return Array.isArray(data) ? data : data?.sessions || [];
+}
+
+export async function chatHistory(sessionId) {
+  const { data } = await http.get(`/chat/history/${sessionId}`);
+  return Array.isArray(data) ? data : data?.messages || [];
+}
+
+export async function chatDeleteSession(sessionId) {
+  await http.delete(`/chat/session/${sessionId}`);
 }
 
 // ─── Request mapping ─────────────────────────────────────────────────

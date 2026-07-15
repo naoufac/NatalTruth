@@ -5,7 +5,7 @@ This is **not** a finished product page. It is an honest map of what exists, wha
 
 | Host | Role | Status |
 |------|------|--------|
-| [nataltruth.com](https://nataltruth.com) | Public frontend (scratch UI) | Live static SPA; may be rebuilt |
+| [nataltruth.com](https://nataltruth.com) | Public frontend (scratch UI) | Live static SPA (HTTP 200); legacy branding may still appear in HTML; may be rebuilt |
 | [api.nataltruth.com](https://api.nataltruth.com) | Calculation API | Live v0.3.0 |
 | [nao.nataltruth.com](https://nao.nataltruth.com) | Admin | Placeholder only |
 
@@ -22,8 +22,8 @@ NatalTruth is a **precision natal calculation + deep interpretation** system:
 3. **Compose deep reports** that *combine* those layers and analyze them (standard quality: long-form, multi-part, personal, actionable — see report standard reference below)  
 4. Ship that through a **frontend** (current one is temporary) and later **plans / Ultra** for coaches  
 
-**Report generation rule (locked):** Swiss Ephemeris **only** for the **$199 Ultra** tier.  
-Other tiers use lighter engines / fewer report depths — to be defined step by step (not invented as finished).
+**Report generation rule (locked):** Swiss Ephemeris **only** for the **$199 Ultra** tier report path.  
+Other tiers’ engines / name systems / report depths: **UNDECIDED** — see **ROADMAP §1.1** matrix (do not invent gates).
 
 ---
 
@@ -43,11 +43,9 @@ Other tiers use lighter engines / fewer report depths — to be defined step by 
 ## Calculation APIs — inventory (truthful)
 
 Canonical contract + schemas: **[docs/nataltruth.md](./docs/nataltruth.md)**  
-Health check: `GET https://api.nataltruth.com/health`
-
 ### A. Live and usable now (validated)
 
-These run on production `api.nataltruth.com` and were stress-tested earlier (reports kept on laptop only).
+These run on production `api.nataltruth.com` (cPanel Node app). Stress history: **`docs/STRESS_TEST_REPORT.md`**. Product verification uses **calculate / name / chat** — not health polling as a goal.
 
 #### Chart (ephemeris)
 
@@ -71,7 +69,8 @@ Chart includes: planetary positions · house cusps · aspects · patterns (grand
 | 9 | Indian Vedic practice | `POST /v1/name/vedic` | 1–8 · Chaldean on Latin |
 | 10 | List systems | `GET /v1/name/systems` | Metadata |
 | 11 | Alias | `POST /v1/gematria` | Same family as name/full |
-| 12 | Health | `GET /health` | Service inventory |
+| 12 | Chat (OpenRouter) | `POST /chat` or `POST /v1/chat` | Model `qwen/qwen3.5-122b-a10b` |
+| — | Process liveness | `GET /health` | Hosting only — **not** a product feature |
 
 **How we will use them:** not all at once for every user/plan. Situation + plan choose which endpoints and which engine (e.g. Swiss reserved for Ultra reports). That routing is **roadmap**, not fully coded.
 
@@ -147,17 +146,22 @@ NatalTruth/
 ## Quick ops
 
 ```bash
-# API health
-curl -k https://api.nataltruth.com/health
+# Product smoke (API on cPanel)
+curl -sS -X POST https://api.nataltruth.com/v1/name/full \
+  -H 'content-type: application/json' \
+  -d '{"fullName":"Jane Example","birthDate":"1990-06-15"}'
 
 # Local API
 pnpm install && pnpm build && pnpm start:api
 
 # Frontend (dev)
 cd frontend && npm install --legacy-peer-deps && npm start
+
+# Publish SPA to cPanel
+cd frontend && npm run build && rsync -avz --delete build/ cpanel:nataltruth.com/
 ```
 
-cPanel: API app `nataltruth-app` · static site `nataltruth.com` · see **docs/HOSTING.md**
+cPanel: API app `nataltruth-app` · SPA `nataltruth.com` · see **docs/HOSTING.md**
 
 ---
 
