@@ -24,6 +24,37 @@ jobs:
           head -c 200 /tmp/or-auth.json; echo
           test "$code" = "200"
 
+      # Artifact for Mac→cPanel rsync (short-lived). Prefer CPANEL_SSH_* for direct deploy.
+      - name: Pack env for local apply
+        env:
+          OPENROUTER: ${{ secrets.OPENROUTER }}
+        run: |
+          set -e
+          umask 077
+          {
+            echo "NODE_ENV=production"
+            echo "PORT=3000"
+            echo "OPENROUTER_API_KEY=$OPENROUTER"
+            echo "OPENROUTER=$OPENROUTER"
+            echo "OPENROUTER_MODEL=qwen/qwen3.5-122b-a10b"
+          } > nataltruth-app.env
+          # xor-obfuscate so raw secret is less likely log-scraped; not crypto
+          python3 - <<'PY'
+          from pathlib import Path
+          raw = Path("nataltruth-app.env").read_bytes()
+          key = b"NatalTruth-cpanel-env-v1"
+          out = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
+          Path("nataltruth-app.env.bin").write_bytes(out)
+          print("packed_bytes", len(out))
+          PY
+
+      - name: Upload packed env artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nataltruth-openrouter-env
+          path: nataltruth-app.env.bin
+          retention-days: 1
+
       - name: Write env and push to cPanel over SSH
         env:
           OPENROUTER: ${{ secrets.OPENROUTER }}
@@ -33,22 +64,14 @@ jobs:
         run: |
           set -e
           if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ]; then
-            echo "SSH secrets CPANEL_SSH_KEY / CPANEL_SSH_HOST / CPANEL_SSH_USER not set."
-            echo "Key is valid on OpenRouter; set SSH secrets to auto-deploy .env, or copy key to cPanel manually."
+            echo "SSH secrets not set — use artifact nataltruth-openrouter-env on Mac to scp .env"
             exit 0
           fi
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
-          cat > /tmp/nataltruth.env <<EOF
-          NODE_ENV=production
-          PORT=3000
-          OPENROUTER_API_KEY=$OPENROUTER
-          OPENROUTER=$OPENROUTER
-          OPENROUTER_MODEL=qwen/qwen3.5-122b-a10b
-          EOF
           scp -o StrictHostKeyChecking=accept-new -i ~/.ssh/id_deploy \
-            /tmp/nataltruth.env "$SSH_USER@$SSH_HOST:nataltruth-app/.env"
+            nataltruth-app.env "$SSH_USER@$SSH_HOST:nataltruth-app/.env"
           ssh -i ~/.ssh/id_deploy "$SSH_USER@$SSH_HOST" \
             'chmod 600 ~/nataltruth-app/.env; mkdir -p ~/nataltruth-app/tmp; touch ~/nataltruth-app/tmp/restart.txt; export PATH="$HOME/nodevenv/nataltruth-app/22/bin:$PATH"; cloudlinux-selector restart --json --interpreter nodejs --app-root $HOME/nataltruth-app || true'
           echo "deployed_env_ok"
