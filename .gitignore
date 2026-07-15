@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.secrets/
+local-only/
+frontend/
+docs/STRESS_TEST_REPORT.md
+docs/STRESS_TEST_REPORT.json
+scripts/stress-test.mjs
+.DS_Store
