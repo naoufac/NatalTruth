@@ -100,37 +100,10 @@ export default function SettingsPage() {
 
   const handlePushToggle = async (checked) => {
     setPushLoading(true);
-    try {
-      const sdk = await loadOneSignal();
-      if (!sdk) {
-        toast.error("Push notifications are not configured for this site.");
-        return;
-      }
-      if (checked) {
-        const playerId = await requestPushPermission();
-        if (playerId) {
-          await axios.post(`${API}/notifications/register-device`, { player_id: playerId }, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setPushEnabled(true);
-          toast.success("Push notifications enabled!");
-        } else {
-          toast.error("Permission denied. Please allow notifications in your browser settings.");
-        }
-      } else {
-        try {
-          await sdk.User.PushSubscription.optOut();
-        } catch {
-          // ignore — caller may already be opted out
-        }
-        setPushEnabled(false);
-        toast.success("Push notifications disabled.");
-      }
-    } catch (e) {
-      toast.error("Could not update push notification settings.");
-    } finally {
-      setPushLoading(false);
-    }
+    // No /notifications/* on api.nataltruth.com — zero 404.
+    setPushEnabled(false);
+    toast.message("Push notifications are not connected to NatalTruth API yet.");
+    setPushLoading(false);
   };
 
   const handleProfileChange = (e) => {
@@ -171,22 +144,11 @@ export default function SettingsPage() {
   };
 
   const handleManageSubscription = async () => {
-    if (user?.subscription_tier === "seeker") {
-      navigate("/pricing");
-      return;
-    }
-    setPortalLoading(true);
-    try {
-      const response = await axios.post(`${API}/payments/portal`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      window.location.href = response.data.portal_url;
-    } catch (error) {
-      const detail = error.response?.data?.detail || "Unable to open billing portal. Please try again.";
-      toast.error(detail);
-    } finally {
-      setPortalLoading(false);
-    }
+    setPortalLoading(false);
+    toast.message("Billing portal is not available yet", {
+      description: "Payments are not on api.nataltruth.com. See Pricing for plan framing only.",
+    });
+    navigate("/pricing");
   };
 
   const settingsSections = [
@@ -391,7 +353,7 @@ export default function SettingsPage() {
                 className="text-xs text-amber-400 underline underline-offset-2 hover:text-amber-300 flex-shrink-0"
                 onClick={async () => {
                   try {
-                    await axios.post(`${API}/auth/resend-verification`, {}, { headers: { Authorization: `Bearer ${token}` } });
+                    toast.message("Email verification is not available — profile is local only.");
                     toast.success("Verification email sent!");
                   } catch {
                     toast.error("Could not send email. Please try again.");

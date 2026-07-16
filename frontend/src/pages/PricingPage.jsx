@@ -120,21 +120,11 @@ export default function PricingPage() {
       return;
     }
 
-    setCheckoutLoading(plan.id);
-    try {
-      const response = await axios.post(
-        `${API}/payments/create-checkout-session`,
-        { tier: plan.id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      // Redirect to Stripe Checkout
-      window.location.href = response.data.checkout_url;
-    } catch (error) {
-      const msg = error.response?.data?.detail || "Something went wrong starting checkout. No charge was made — try again in a moment.";
-      toast.error(msg);
-    } finally {
-      setCheckoutLoading(null);
-    }
+    // No payments API on api.nataltruth.com — never HTTP (zero 404).
+    setCheckoutLoading(null);
+    toast.message("Payments are not built yet", {
+      description: "Plans are product framing only. Chart, name systems, and chat are live.",
+    });
   };
 
   if (loading) {

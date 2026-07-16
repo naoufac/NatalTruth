@@ -50,15 +50,13 @@ export default function AuthPage() {
   const handleForgotSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await axios.post(`${API}/auth/forgot-password`, { email: forgotEmail });
-      toast.success("If that email is registered, a reset link has been sent.");
-      setIsForgot(false);
-    } catch {
-      toast.error("Something went wrong on our end. Your data is safe — please try again.");
-    } finally {
-      setLoading(false);
-    }
+    // No server auth — profile is local only (zero 404).
+    await new Promise((r) => setTimeout(r, 200));
+    toast.message("Password reset is not available", {
+      description: "NatalTruth uses a local profile on this device. Re-register or update Settings — no email reset API.",
+    });
+    setIsForgot(false);
+    setLoading(false);
   };
 
   // Step 1 submit: validate and advance to step 2

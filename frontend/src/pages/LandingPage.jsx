@@ -708,14 +708,13 @@ const Footer = () => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await axios.post(`${API}/subscribe`, { email, name });
-      setDone(true);
-    } catch {
-      setDone(true);
-    } finally {
-      setLoading(false);
-    }
+    // No /subscribe on api.nataltruth.com — local ack only (zero 404).
+    await new Promise((r) => setTimeout(r, 200));
+    setDone(true);
+    setLoading(false);
+    toast.message("Newsletter API not connected yet", {
+      description: "Your email was not sent to a server. Create a profile to use live calc.",
+    });
   };
 
   return (

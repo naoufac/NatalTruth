@@ -62,29 +62,11 @@ const VoiceHoroscopePlayer = ({ token, tier }) => {
       }
       return;
     }
-    setLoading(true);
-    try {
-      const res = await axios.get(`${API}/guidance/voice`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: "blob",
-      });
-      const url = URL.createObjectURL(res.data);
-      setAudioUrl(url);
-      // Wait for next tick so the <audio> element binds the src
-      setTimeout(() => {
-        if (audioRef.current) audioRef.current.play();
-      }, 50);
-    } catch (err) {
-      const status = err?.response?.status;
-      if (status === 403) {
-        toast.error("Voice horoscope is a premium feature. Upgrade to unlock daily audio readings.");
-        navigate("/pricing");
-      } else {
-        toast.error("Couldn't generate your voice horoscope. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    // No /guidance/voice on api.nataltruth.com — zero 404.
+    setLoading(false);
+    toast.message("Voice guidance is not available yet", {
+      description: "Use Chart, Numerology, or Chat — those call live NatalTruth APIs.",
+    });
   };
 
   return (
@@ -589,31 +571,13 @@ export default function Dashboard() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { token, updateUser } = useAuth();
 
-  // Handle Stripe Checkout success redirect
+  // Payment redirects: no /auth/me on calc API — local toast only (zero 404).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("subscription") === "success") {
-      window.history.replaceState({}, "", window.location.pathname);
-      axios
-        .get(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-        .then((res) => {
-          updateUser(res.data);
-          import("sonner").then(({ toast }) => {
-            toast.success("Subscription activated! Welcome to your new plan.");
-          });
-        })
-        .catch(() => {
-          import("sonner").then(({ toast }) => {
-            toast.success("Subscription activated! Welcome to your new plan.");
-          });
-        });
-    }
-    if (params.get("reading") === "success") {
+    if (params.get("subscription") === "success" || params.get("reading") === "success") {
       window.history.replaceState({}, "", window.location.pathname);
       import("sonner").then(({ toast }) => {
-        toast.success(
-          "Payment received — your personal reading is on its way. We'll email it within 48 hours."
-        );
+        toast.message("Payments are not connected to NatalTruth API yet.");
       });
     }
   }, [token, updateUser]);
