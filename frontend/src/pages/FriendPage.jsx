@@ -1,12 +1,21 @@
-import FeatureUnavailable from "@/components/FeatureUnavailable";
-import { UNAVAILABLE_FEATURES } from "@/lib/liveApis";
+import { Link } from "react-router-dom";
+import CompatibilityPage from "./CompatibilityPage";
 
-/** No /friend/* on api.nataltruth.com — zero HTTP. */
+/**
+ * Friend workflow = same live dual-chart compare + chat.
+ * Reuses CompatibilityPage (API-backed) — not a dead /friend/* backend.
+ */
 export default function FriendPage() {
   return (
-    <FeatureUnavailable
-      title="Friend chat"
-      description={UNAVAILABLE_FEATURES.friend}
-    />
+    <div>
+      <div className="max-w-3xl mx-auto px-6 pt-4 text-sm text-muted-foreground">
+        Friend mode uses live chart + name APIs for two people.{" "}
+        <Link to="/chat" className="text-primary underline">
+          Chat
+        </Link>{" "}
+        for coaching after you compare.
+      </div>
+      <CompatibilityPage />
+    </div>
   );
 }

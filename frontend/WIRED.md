@@ -1,22 +1,20 @@
-# Frontend ↔ api.nataltruth.com (zero-404 pass 2026-07-16)
+# Frontend ↔ API (full product shell, live calc)
 
-**Rule:** SPA must only HTTP routes that exist on the calc API, or make **no** request.
+**Direction:** existing SPA + api.nataltruth.com. No marketing-only static product pages for user tools.
 
-## Live API calls from SPA
+## Live
 
-| UI | API |
-|----|-----|
-| Chart, Share (data) | `POST /v1/calculate/swiss` \| `moshier` |
-| Numerology, Gematria, Dashboard numbers | `POST /v1/name/full` |
-| Chat | `POST /chat`, sessions/history/delete |
-| Auth / Settings profile | **localStorage only** |
+| Page | API |
+|------|-----|
+| Chart, Transits (natal dynamics), Horoscope today | calculate swiss/moshier |
+| Numerology, Gematria, Dashboard | name/full |
+| Compatibility, Friend | 2× calculate + 2× name/full |
+| Public chart | calculate via query params |
+| Zodiac | optional live overlay + calculate |
+| Chat | /chat |
+| Plan | GET /v1/entitlements?email= |
+| Admin (in SPA) | shows entitlement; nao host for future CMS |
 
-Adapter: `src/lib/nataltruth.js` · live list: `src/lib/liveApis.js`
+## Ultra seed
 
-## Pages with no HTTP (honest UI)
-
-Transits, Friend, Compatibility, Horoscope today, Public chart, Reading thanks, Verify email, Reset password, Admin (redirect messaging), Pricing checkout, Buy reading, Voice, Newsletter subscribe, Share PNG/token, Settings push/billing/resend verify.
-
-## Env
-
-`REACT_APP_BACKEND_URL=https://api.nataltruth.com`
+`nchobah@gmail.com` → plan **ultra**, engineDefault **swiss** (`data/entitlements.json` on API host).

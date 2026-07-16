@@ -287,3 +287,24 @@ export function saveLocalProfile(profile) {
 export function clearLocalProfile() {
   localStorage.removeItem(PROFILE_KEY);
 }
+
+/**
+ * Plan entitlement from API (file-backed on server).
+ * @returns {{ plan: string, engineDefault: string, email: string } | null}
+ */
+export async function fetchEntitlement(email) {
+  if (!email?.trim()) return null;
+  const { data } = await http.get("/v1/entitlements", {
+    params: { email: email.trim() },
+  });
+  if (!data?.ok) return null;
+  return data.entitlement;
+}
+
+/** Preferred engine from plan or local override. */
+export function resolveEngine(profile) {
+  const local = typeof window !== "undefined" && localStorage.getItem("nataltruth_engine");
+  if (local === "swiss" || local === "moshier") return local;
+  if (profile?.engineDefault === "swiss" || profile?.plan === "ultra") return "swiss";
+  return "swiss"; // product default high precision until gating enforced
+}

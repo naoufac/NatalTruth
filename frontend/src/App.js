@@ -64,6 +64,9 @@ export const useAuth = () => {
 
 function profileToUser(profile) {
   if (!profile) return null;
+  const email = (profile.email || "").toLowerCase();
+  const plan = profile.plan || profile.subscription_tier || "free";
+  const isFounder = email === "nchobah@gmail.com";
   return {
     id: profile.id || "local",
     email: profile.email || "",
@@ -76,10 +79,35 @@ function profileToUser(profile) {
     longitude: profile.longitude,
     utc_offset: profile.utc_offset || profile.utcOffset || null,
     timezone: profile.timezone || profile.timeZoneId || null,
-    is_admin: false,
-    is_guest: true,
-    tier: "calculator",
+    is_admin: !!(profile.is_admin || isFounder),
+    is_guest: false,
+    tier: plan,
+    plan,
+    subscription_tier: plan,
+    engineDefault: profile.engineDefault || (plan === "ultra" ? "swiss" : "moshier"),
   };
+}
+
+async function hydrateEntitlement(profile) {
+  if (!profile?.email) return profile;
+  try {
+    const { fetchEntitlement } = await import("@/lib/nataltruth");
+    const ent = await fetchEntitlement(profile.email);
+    if (!ent) return profile;
+    const next = {
+      ...profile,
+      plan: ent.plan,
+      subscription_tier: ent.plan,
+      engineDefault: ent.engineDefault,
+    };
+    saveLocalProfile(next);
+    if (ent.engineDefault) {
+      localStorage.setItem("nataltruth_engine", ent.engineDefault);
+    }
+    return next;
+  } catch {
+    return profile;
+  }
 }
 
 const AuthProvider = ({ children }) => {
@@ -95,20 +123,24 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Restore local session + birth profile (calc API has no /auth/*)
-    const session = localStorage.getItem(SESSION_KEY);
-    const profile = loadLocalProfile();
-    if (session && profile) {
-      setToken(session);
-      setUser(profileToUser(profile));
-    } else if (profile?.birth_date) {
-      // Profile without session still usable
-      const sid = "local-session";
-      localStorage.setItem(SESSION_KEY, sid);
-      setToken(sid);
-      setUser(profileToUser(profile));
-    }
-    setLoading(false);
+    // Restore local session + birth profile; hydrate plan from API entitlements
+    (async () => {
+      const session = localStorage.getItem(SESSION_KEY);
+      let profile = loadLocalProfile();
+      if (profile?.email) {
+        profile = await hydrateEntitlement(profile);
+      }
+      if (session && profile) {
+        setToken(session);
+        setUser(profileToUser(profile));
+      } else if (profile?.birth_date || profile?.email) {
+        const sid = "local-session";
+        localStorage.setItem(SESSION_KEY, sid);
+        setToken(sid);
+        setUser(profileToUser(profile));
+      }
+      setLoading(false);
+    })();
   }, []);
 
   useEffect(() => {
@@ -120,7 +152,7 @@ const AuthProvider = ({ children }) => {
    * Accepts email/password fields for UI compatibility; stores profile locally.
    */
   const login = async (email, password) => {
-    const profile = loadLocalProfile() || {
+    let profile = loadLocalProfile() || {
       email,
       name: email?.split("@")[0] || "User",
       birth_name: "",
@@ -129,6 +161,7 @@ const AuthProvider = ({ children }) => {
       birth_place: "",
     };
     profile.email = email || profile.email;
+    profile = await hydrateEntitlement(profile);
     saveLocalProfile(profile);
     const sid = `local-${Date.now()}`;
     localStorage.setItem(SESSION_KEY, sid);
@@ -143,7 +176,7 @@ const AuthProvider = ({ children }) => {
    * Chart calc uses this profile against api.nataltruth.com.
    */
   const register = async (userData) => {
-    const profile = {
+    let profile = {
       id: `local-${Date.now()}`,
       email: userData.email || "",
       name: userData.name || "",
@@ -156,6 +189,7 @@ const AuthProvider = ({ children }) => {
       utc_offset: userData.utc_offset || userData.utcOffset || null,
       timezone: userData.timezone || userData.timeZoneId || null,
     };
+    profile = await hydrateEntitlement(profile);
     saveLocalProfile(profile);
     const sid = `local-${Date.now()}`;
     localStorage.setItem(SESSION_KEY, sid);

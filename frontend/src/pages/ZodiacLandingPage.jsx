@@ -1,12 +1,15 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
+import { useAuth } from "@/App";
+import {
+  calculateChart,
+  adaptChartForUi,
+  loadLocalProfile,
+  resolveEngine,
+} from "@/lib/nataltruth";
 import { Button } from "@/components/ui/button";
 import { Sparkles, ArrowLeft, Star } from "lucide-react";
 
-/**
- * Static zodiac marketing pages — no horoscope API (would 404).
- * Real natal data: /chart + /auth profile.
- */
 const ZODIAC = {
   aries: { name: "Aries", glyph: "♈", element: "Fire", ruler: "Mars", dates: "March 21 – April 19", traits: ["Natural leader, fearless trailblazer", "Driven by passion and independence", "Thrives on challenge and new beginnings"] },
   taurus: { name: "Taurus", glyph: "♉", element: "Earth", ruler: "Venus", dates: "April 20 – May 20", traits: ["Grounded builder, sensory connoisseur", "Values stability, loyalty, and beauty", "Patient determination that moves mountains"] },
@@ -22,15 +25,30 @@ const ZODIAC = {
   pisces: { name: "Pisces", glyph: "♓", element: "Water", ruler: "Neptune", dates: "February 19 – March 20", traits: ["Empathic dreamer, spiritual sponge", "Sees the world through compassion", "Creative depth that transcends the ordinary"] },
 };
 
+/**
+ * Sign marketing + optional LIVE natal overlay if profile matches.
+ */
 export default function ZodiacLandingPage() {
   const { sign } = useParams();
+  const { user } = useAuth();
   const slug = (sign || "").toLowerCase();
   const data = ZODIAC[slug];
+  const [live, setLive] = useState(null);
 
-  const others = useMemo(
-    () => Object.entries(ZODIAC).filter(([k]) => k !== slug).slice(0, 6),
-    [slug]
-  );
+  useEffect(() => {
+    (async () => {
+      const profile = loadLocalProfile() || user;
+      if (!profile?.birth_date || profile.latitude == null || profile.longitude == null) return;
+      try {
+        const raw = await calculateChart(profile, resolveEngine(profile));
+        setLive(adaptChartForUi(raw, profile));
+      } catch {
+        /* optional overlay */
+      }
+    })();
+  }, [user, slug]);
+
+  const match = live?.sun_sign?.toLowerCase() === data?.name?.toLowerCase();
 
   if (!data) return <Navigate to="/" replace />;
 
@@ -57,9 +75,24 @@ export default function ZodiacLandingPage() {
           </p>
         </div>
 
+        {live && (
+          <div className={`glass-card rounded-2xl p-5 mb-6 border ${match ? "border-primary/50" : "border-border"}`}>
+            <h2 className="font-serif text-lg mb-2">Your live natal chart</h2>
+            <p className="text-sm text-muted-foreground">
+              From api.nataltruth.com: Sun <strong>{live.sun_sign}</strong> · Moon {live.moon_sign} · Rising{" "}
+              {live.rising_sign}
+              {match ? " — this page’s sign matches your Sun." : " — your Sun is a different sign; open full chart for truth."}
+            </p>
+            <div className="flex gap-2 mt-4">
+              <Link to="/chart"><Button size="sm">Full chart</Button></Link>
+              <Link to="/chat"><Button size="sm" variant="outline">Ask AI</Button></Link>
+            </div>
+          </div>
+        )}
+
         <div className="glass-card rounded-2xl p-6 mb-8 border border-border">
           <h2 className="font-serif text-xl mb-4 flex items-center gap-2">
-            <Star className="w-5 h-5 text-primary" /> Traits (general sun-sign notes)
+            <Star className="w-5 h-5 text-primary" /> General sun-sign notes
           </h2>
           <ul className="space-y-2 text-left text-muted-foreground">
             {data.traits.map((t) => (
@@ -69,32 +102,14 @@ export default function ZodiacLandingPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-muted-foreground mt-6 leading-relaxed">
-            Sun-sign blurbs are not a personal natal calculation. For planets, houses, aspects, and multi-system name numbers, use your birth chart on NatalTruth (requires birth date + place coordinates).
+          <p className="text-xs text-muted-foreground mt-6">
+            Marketing notes only. Precision = your birth chart calculation on NatalTruth.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3 justify-center mb-12">
-          <Link to="/auth?mode=register">
-            <Button className="rounded-xl bg-primary text-primary-foreground">Create profile & chart</Button>
-          </Link>
-          <Link to="/chart">
-            <Button variant="outline" className="rounded-xl">Open chart</Button>
-          </Link>
-          <Link to="/chat">
-            <Button variant="outline" className="rounded-xl">AI coach</Button>
-          </Link>
-        </div>
-
-        <div>
-          <h3 className="text-sm text-muted-foreground mb-3 text-center">Other signs</h3>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {others.map(([k, v]) => (
-              <Link key={k} to={`/zodiac/${k}`} className="text-sm px-3 py-1 rounded-full border border-border hover:border-primary/40">
-                {v.glyph} {v.name}
-              </Link>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <Link to="/auth?mode=register"><Button>Create profile & chart</Button></Link>
+          <Link to="/horoscope/today"><Button variant="outline">My chart today (live)</Button></Link>
         </div>
       </main>
     </div>

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "byEmail": {
+    "nchobah@gmail.com": {
+      "email": "nchobah@gmail.com",
+      "plan": "ultra",
+      "engineDefault": "swiss",
+      "notes": "Founder seed Ultra",
+      "updatedAt": "2026-07-16T00:00:00.000Z"
+    }
+  }
+}

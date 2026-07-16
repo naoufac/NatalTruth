@@ -46,6 +46,12 @@ import {
   listSessions,
   OPENROUTER_MODEL,
 } from "./openrouter.js";
+import {
+  getEntitlement,
+  listEntitlements,
+  setEntitlement,
+  type PlanId,
+} from "./entitlements.js";
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
@@ -143,13 +149,71 @@ app.get("/health", (_req, res) => {
   res.json({
     ok: true,
     service: "nataltruth-api",
-    version: "0.4.0",
+    version: "0.5.0",
     ai: {
       provider: "openrouter",
       model: OPENROUTER_MODEL,
       configured: !!getApiKey(),
     },
   });
+});
+
+// ── Entitlements (email → plan; founder Ultra seeded) ───────────────
+
+app.get("/v1/entitlements", (req, res) => {
+  const email = String(req.query.email || "");
+  if (!email.trim()) {
+    res.status(400).json({ ok: false, error: "email query required" });
+    return;
+  }
+  const ent = getEntitlement(email);
+  res.json({ ok: true, entitlement: ent });
+});
+
+/** Seed/update plan — protected by ADMIN_TOKEN or ADMIN_PASSWORD header. */
+app.put("/v1/entitlements", (req, res) => {
+  const admin =
+    process.env.ADMIN_TOKEN ||
+    process.env.ADMIN_PASSWORD ||
+    process.env.NATALTRUTH_ADMIN_PASSWORD ||
+    "";
+  const given =
+    (req.headers["x-admin-token"] as string) ||
+    (req.headers["x-admin-password"] as string) ||
+    "";
+  if (!admin || given !== admin) {
+    res.status(401).json({ ok: false, error: "admin auth required" });
+    return;
+  }
+  try {
+    const email = String(req.body?.email || "");
+    const plan = String(req.body?.plan || "free") as PlanId;
+    if (!["free", "monthly", "premium", "ultra"].includes(plan)) {
+      res.status(400).json({ ok: false, error: "invalid plan" });
+      return;
+    }
+    const ent = setEntitlement(email, plan, req.body?.notes);
+    res.json({ ok: true, entitlement: ent });
+  } catch (err) {
+    sendErr(res, err, "entitlement update failed");
+  }
+});
+
+app.get("/v1/entitlements/list", (req, res) => {
+  const admin =
+    process.env.ADMIN_TOKEN ||
+    process.env.ADMIN_PASSWORD ||
+    process.env.NATALTRUTH_ADMIN_PASSWORD ||
+    "";
+  const given =
+    (req.headers["x-admin-token"] as string) ||
+    (req.headers["x-admin-password"] as string) ||
+    "";
+  if (!admin || given !== admin) {
+    res.status(401).json({ ok: false, error: "admin auth required" });
+    return;
+  }
+  res.json({ ok: true, entitlements: listEntitlements() });
 });
 
 // ── Chart ──────────────────────────────────────────────────────────
